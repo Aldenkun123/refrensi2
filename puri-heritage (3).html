@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Refrensi Website Puri</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          gold: '#C5A059',
+          'gold-light': '#D4B578',
+          charcoal: '#1C1C1C',
+          'warm-gray': '#F5F3EF',
+          'mid-gray': '#7A7A7A',
+        },
+        fontFamily: {
+          serif: ['Cormorant Garamond', 'serif'],
+          sans: ['Jost', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Jost', sans-serif; background: #fff; color: #1C1C1C; }
+  h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; }
+
+  /* Nav */
+  .nav-link { position: relative; font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #1C1C1C; transition: color 0.3s; }
+  .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: #C5A059; transition: width 0.35s ease; }
+  .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+  .nav-link.active { color: #C5A059; }
+  .nav-link:hover { color: #C5A059; }
+
+  /* Hero */
+  .hero-overlay { background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.5) 100%); }
+
+  /* Divider */
+  .gold-divider { width: 48px; height: 1px; background: #C5A059; margin: 1rem auto; }
+  .gold-divider-left { width: 48px; height: 1px; background: #C5A059; margin: 1rem 0; }
+
+  /* Cards */
+  .card-hover { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+  .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); }
+
+  /* Gallery */
+  .gallery-img { transition: transform 0.5s ease; }
+  .gallery-card:hover .gallery-img { transform: scale(1.04); }
+  .gallery-card { overflow: hidden; }
+
+  /* Hamburger */
+  .menu-open { display: flex; }
+  .menu-closed { display: none; }
+
+  /* Page transitions */
+  .page { animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Scroll bar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #f5f3ef; }
+  ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 2px; }
+
+  /* Map iframe */
+  .map-frame { border: 0; filter: grayscale(20%) contrast(1.05); }
+
+  /* Info icon box */
+  .info-icon { width: 48px; height: 48px; min-width: 48px; background: #F5F3EF; border: 1px solid #E8E4DC; display: flex; align-items: center; justify-content: center; }
+
+  /* Detail badge */
+  .badge { display: inline-block; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: #F5F3EF; color: #C5A059; border: 1px solid #C5A059; padding: 2px 10px; }
+</style>
+</head>
+<body class="bg-white text-charcoal">
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100" style="backdrop-filter:blur(12px);">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <button onclick="showPage('beranda')" class="font-serif text-lg font-semibold tracking-wide hover:text-gold transition-colors duration-300">
+      Refrensi Website Puri
+    </button>
+    <!-- Desktop Nav -->
+    <div class="hidden md:flex items-center gap-8">
+      <button onclick="showPage('beranda')" class="nav-link" id="nav-beranda">Beranda</button>
+      <button onclick="showPage('warisan')" class="nav-link" id="nav-warisan">Warisan</button>
+      <button onclick="showPage('galeri')" class="nav-link" id="nav-galeri">Galeri</button>
+      <button onclick="showPage('informasi')" class="nav-link" id="nav-informasi">Informasi</button>
+      <button onclick="showPage('lokasi')" class="nav-link" id="nav-lokasi">Lokasi</button>
+    </div>
+    <!-- Mobile hamburger -->
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMobileMenu()">
+      <span class="block w-6 h-0.5 bg-charcoal transition-all"></span>
+      <span class="block w-6 h-0.5 bg-charcoal transition-all"></span>
+      <span class="block w-4 h-0.5 bg-charcoal transition-all"></span>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
+    <div class="flex flex-col py-4 px-6 gap-4">
+      <button onclick="showPage('beranda');toggleMobileMenu()" class="nav-link text-left py-1">Beranda</button>
+      <button onclick="showPage('warisan');toggleMobileMenu()" class="nav-link text-left py-1">Warisan</button>
+      <button onclick="showPage('galeri');toggleMobileMenu()" class="nav-link text-left py-1">Galeri</button>
+      <button onclick="showPage('informasi');toggleMobileMenu()" class="nav-link text-left py-1">Informasi</button>
+      <button onclick="showPage('lokasi');toggleMobileMenu()" class="nav-link text-left py-1">Lokasi</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== PAGE: BERANDA ===================== -->
+<div id="page-beranda" class="page pt-16">
+  <!-- Hero -->
+  <div class="relative h-screen min-h-[560px] max-h-[820px] overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1600&q=80" alt="Gerbang Bali" class="w-full h-full object-cover object-center" />
+    <div class="hero-overlay absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+      <span class="badge text-white border-white mb-6">Warisan Budaya Bali</span>
+      <h1 class="text-white font-serif font-light text-5xl md:text-7xl lg:text-8xl leading-none mb-4" style="text-shadow:0 2px 24px rgba(0,0,0,0.4);">
+        Refrensi<br /><em>Website Puri</em>
+      </h1>
+      <div class="gold-divider"></div>
+      <p class="text-white/80 font-sans font-light text-sm md:text-base tracking-widest uppercase mt-4 max-w-xs">
+        Melestarikan Keagungan Budaya & Sejarah
+      </p>
+      <button onclick="showPage('warisan')" class="mt-10 px-8 py-3 border border-white text-white text-xs tracking-widest uppercase font-sans hover:bg-white hover:text-charcoal transition-all duration-300">
+        Jelajahi Warisan
+      </button>
+    </div>
+    <!-- Scroll hint -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/60">
+      <span class="text-xs tracking-widest uppercase font-sans">Gulir</span>
+      <div class="w-px h-10 bg-white/40 animate-pulse"></div>
+    </div>
+  </div>
+
+  <!-- Sambutan -->
+  <section class="py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <span class="text-xs tracking-widest uppercase font-sans text-gold">Sambutan</span>
+      <div class="gold-divider"></div>
+      <h2 class="font-serif text-4xl md:text-5xl font-light mt-4 mb-6 leading-tight">Selamat Datang di<br /><em>Refrensi Website Puri</em></h2>
+      <p class="font-sans font-light text-mid-gray leading-relaxed text-base md:text-lg">
+        Kami mengundang Anda untuk menyelami keindahan, keagungan, dan kekayaan budaya yang tersimpan dalam halaman digital ini. Refrensi Website Puri hadir sebagai jendela untuk memahami warisan leluhur Bali—dari arsitektur megah, upacara sakral, hingga seni tari yang memukau jiwa.
+      </p>
+    </div>
+  </section>
+
+  <!-- Sejarah Singkat -->
+  <section class="py-20 px-6 bg-warm-gray">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">Sejarah Singkat</span>
+        <div class="gold-divider-left"></div>
+        <h2 class="font-serif text-4xl md:text-5xl font-light mb-6 leading-tight">Akar Budaya yang<br /><em>Mengakar Dalam</em></h2>
+        <p class="font-sans font-light text-mid-gray leading-relaxed mb-4">
+          Puri sebagai institusi kerajaan di Bali telah berdiri selama berabad-abad, menjadi pusat kekuatan politik, spiritual, dan kesenian. Sejak era kerajaan Bali kuno, puri menjadi jantung kehidupan masyarakat—tempat para raja memimpin, seniman berkarya, dan upacara besar diselenggarakan.
+        </p>
+        <p class="font-sans font-light text-mid-gray leading-relaxed">
+          Hingga kini, keluarga puri tetap menjaga tradisi yang diwariskan dari generasi ke generasi, memastikan nilai-nilai luhur budaya Bali tidak terkikis oleh zaman.
+        </p>
+        <button onclick="showPage('warisan')" class="mt-8 inline-flex items-center gap-3 text-xs tracking-widest uppercase font-sans text-gold hover:gap-5 transition-all duration-300">
+          Lihat Warisan
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ca9?auto=format&fit=crop&w=800&q=80" alt="Arsitektur Puri" class="w-full object-cover" style="height:420px;" />
+        <div class="absolute -bottom-4 -left-4 w-24 h-24 border border-gold opacity-40"></div>
+        <div class="absolute -top-4 -right-4 w-16 h-16 border border-gold opacity-30"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What to find -->
+  <section class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">Eksplorasi</span>
+        <div class="gold-divider"></div>
+        <h2 class="font-serif text-4xl md:text-5xl font-light mt-2">Temukan di Sini</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- card -->
+        <div class="card-hover border border-gray-100 p-8 cursor-pointer group" onclick="showPage('warisan')">
+          <div class="w-10 h-10 mb-6 text-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a4 4 0 018 0v2"/><path d="M3 11h18"/></svg>
+          </div>
+          <h3 class="font-serif text-2xl mb-3 group-hover:text-gold transition-colors">Warisan</h3>
+          <p class="font-sans font-light text-mid-gray text-sm leading-relaxed">Bangunan bersejarah, area sakral, dan pusaka kerajaan yang tersimpan dengan baik.</p>
+        </div>
+        <div class="card-hover border border-gray-100 p-8 cursor-pointer group" onclick="showPage('galeri')">
+          <div class="w-10 h-10 mb-6 text-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          </div>
+          <h3 class="font-serif text-2xl mb-3 group-hover:text-gold transition-colors">Galeri</h3>
+          <p class="font-sans font-light text-mid-gray text-sm leading-relaxed">Koleksi foto tarian, bangunan, upacara, dan detail arsitektur yang memukau.</p>
+        </div>
+        <div class="card-hover border border-gray-100 p-8 cursor-pointer group" onclick="showPage('informasi')">
+          <div class="w-10 h-10 mb-6 text-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+          </div>
+          <h3 class="font-serif text-2xl mb-3 group-hover:text-gold transition-colors">Informasi</h3>
+          <p class="font-sans font-light text-mid-gray text-sm leading-relaxed">Panduan lengkap kunjungan, aturan etika, dan kontak resmi untuk tamu.</p>
+        </div>
+        <div class="card-hover border border-gray-100 p-8 cursor-pointer group" onclick="showPage('lokasi')">
+          <div class="w-10 h-10 mb-6 text-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 21s-7-6.5-7-11a7 7 0 1114 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2"/></svg>
+          </div>
+          <h3 class="font-serif text-2xl mb-3 group-hover:text-gold transition-colors">Lokasi</h3>
+          <p class="font-sans font-light text-mid-gray text-sm leading-relaxed">Petunjuk arah dan peta interaktif untuk menemukan kami dengan mudah.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote strip -->
+  <section class="py-20 px-6 bg-charcoal text-white text-center">
+    <div class="max-w-2xl mx-auto">
+      <div class="gold-divider"></div>
+      <h2 class="font-serif text-3xl md:text-4xl font-light italic mt-4 mb-4 leading-relaxed">
+        "Bali adalah jiwa yang tak pernah tidur—<br />setiap sudutnya berbisik tentang keabadian."
+      </h2>
+      <div class="gold-divider"></div>
+    </div>
+  </section>
+  <!-- Footer rendered here -->
+  <div id="footer-beranda"></div>
+</div>
+
+<!-- ===================== PAGE: GALERI ===================== -->
+<div id="page-galeri" class="page pt-16 hidden">
+  <div class="py-20 px-6 text-center bg-warm-gray">
+    <span class="text-xs tracking-widest uppercase font-sans text-gold">Koleksi Visual</span>
+    <div class="gold-divider"></div>
+    <h1 class="font-serif text-5xl md:text-6xl font-light mt-2">Galeri</h1>
+  </div>
+
+  <!-- Grid -->
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <div id="gallery-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- items injected by JS -->
+    </div>
+  </div>
+  <div id="footer-galeri"></div>
+</div>
+
+<!-- ===================== PAGE: INFORMASI ===================== -->
+<div id="page-informasi" class="page pt-16 hidden">
+  <div class="py-20 px-6 text-center bg-warm-gray">
+    <span class="text-xs tracking-widest uppercase font-sans text-gold">Panduan Kunjungan</span>
+    <div class="gold-divider"></div>
+    <h1 class="font-serif text-5xl md:text-6xl font-light mt-2">Informasi</h1>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-6 py-20 space-y-12">
+    <!-- Alamat -->
+    <div class="flex gap-6 items-start">
+      <div class="info-icon">
+        <svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-6.5-7-11a7 7 0 1114 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2"/></svg>
+      </div>
+      <div>
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">Alamat</span>
+        <h3 class="font-serif text-2xl mt-1 mb-2">Lokasi Puri</h3>
+        <p class="font-sans font-light text-mid-gray leading-relaxed">Jalan Raya Ubud No. 1,<br />Ubud, Kabupaten Gianyar,<br />Bali 80571, Indonesia</p>
+      </div>
+    </div>
+    <div class="border-t border-gray-100"></div>
+
+    <!-- Jam Kunjungan -->
+    <div class="flex gap-6 items-start">
+      <div class="info-icon">
+        <svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      </div>
+      <div>
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">Jam Kunjungan</span>
+        <h3 class="font-serif text-2xl mt-1 mb-3">Waktu Operasional</h3>
+        <div class="space-y-2 font-sans font-light text-mid-gray">
+          <div class="flex justify-between max-w-xs"><span>Senin – Jumat</span><span class="text-charcoal">08.00 – 17.00 WITA</span></div>
+          <div class="flex justify-between max-w-xs"><span>Sabtu</span><span class="text-charcoal">08.00 – 15.00 WITA</span></div>
+          <div class="flex justify-between max-w-xs"><span>Minggu</span><span class="text-charcoal">09.00 – 13.00 WITA</span></div>
+          <div class="flex justify-between max-w-xs text-gold/80 mt-2"><span>Hari Raya</span><span>Tutup</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-100"></div>
+
+    <!-- Aturan -->
+    <div class="flex gap-6 items-start">
+      <div class="info-icon">
+        <svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4M12 3a9 9 0 100 18A9 9 0 0012 3z"/></svg>
+      </div>
+      <div>
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">Etika Berkunjung</span>
+        <h3 class="font-serif text-2xl mt-1 mb-3">Aturan & Tata Krama</h3>
+        <ul class="space-y-3 font-sans font-light text-mid-gray">
+          <li class="flex items-start gap-3"><span class="text-gold mt-1">—</span><span>Wajib menggunakan <strong class="text-charcoal font-normal">kain adat atau sarung Bali</strong> di area sakral (tersedia di loket masuk).</span></li>
+          <li class="flex items-start gap-3"><span class="text-gold mt-1">—</span><span>Berpakaian sopan dan menutup bahu. Dilarang menggunakan pakaian yang terlalu terbuka.</span></li>
+          <li class="flex items-start gap-3"><span class="text-gold mt-1">—</span><span>Dilarang memasuki area pura jika sedang dalam kondisi tidak suci (masa haid bagi perempuan).</span></li>
+          <li class="flex items-start gap-3"><span class="text-gold mt-1">—</span><span>Berbicara dengan nada pelan dan tenang di area sakral. Jaga keheningan.</span></li>
+          <li class="flex items-start gap-3"><span class="text-gold mt-1">—</span><span>Dilarang merokok, membuang sampah sembarangan, atau membawa minuman keras.</span></li>
+          <li class="flex items-start gap-3"><span class="text-gold mt-1">—</span><span>Fotografi diperbolehkan untuk keperluan pribadi, bukan komersial, tanpa menggunakan flash.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-100"></div>
+
+    <!-- Kontak -->
+    <div class="flex gap-6 items-start">
+      <div class="info-icon">
+        <svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.02 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      </div>
+      <div>
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">Kontak</span>
+        <h3 class="font-serif text-2xl mt-1 mb-3">Hubungi Kami</h3>
+        <div class="space-y-3 font-sans font-light">
+          <a href="https://wa.me/6281234567890" class="flex items-center gap-3 text-mid-gray hover:text-gold transition-colors">
+            <svg class="w-4 h-4 text-gold" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.108.549 4.085 1.514 5.809L0 24l6.391-1.489A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.51-5.17-1.4l-.37-.22-3.8.885.894-3.7-.24-.38A9.974 9.974 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            WhatsApp: +62 812-3456-7890
+          </a>
+          <a href="mailto:info@refrensiwebsitepuri.id" class="flex items-center gap-3 text-mid-gray hover:text-gold transition-colors">
+            <svg class="w-4 h-4 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            info@refrensiwebsitepuri.id
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer-informasi"></div>
+</div>
+
+<!-- ===================== PAGE: LOKASI ===================== -->
+<div id="page-lokasi" class="page pt-16 hidden">
+  <div class="py-20 px-6 text-center bg-warm-gray">
+    <span class="text-xs tracking-widest uppercase font-sans text-gold">Temukan Kami</span>
+    <div class="gold-divider"></div>
+    <h1 class="font-serif text-5xl md:text-6xl font-light mt-2">Lokasi</h1>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-start">
+    <div>
+      <span class="text-xs tracking-widest uppercase font-sans text-gold">Alamat Lengkap</span>
+      <div class="gold-divider-left"></div>
+      <h2 class="font-serif text-3xl font-light mb-4">Cara Menuju<br /><em>Refrensi Website Puri</em></h2>
+      <p class="font-sans font-light text-mid-gray leading-relaxed mb-6">
+        Berlokasi di jantung Ubud, kawasan seni dan budaya Bali yang terkenal di dunia. Dapat dijangkau dari Bandara Internasional Ngurah Rai dalam waktu sekitar 1 jam perjalanan.
+      </p>
+      <div class="space-y-4 font-sans font-light text-charcoal">
+        <div class="flex gap-3">
+          <svg class="w-4 h-4 text-gold mt-1 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-6.5-7-11a7 7 0 1114 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2"/></svg>
+          <span>Jalan Raya Ubud No. 1, Ubud, Gianyar, Bali 80571</span>
+        </div>
+        <div class="flex gap-3">
+          <svg class="w-4 h-4 text-gold mt-1 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <span>Buka Senin–Jumat, 08.00–17.00 WITA</span>
+        </div>
+        <div class="flex gap-3">
+          <svg class="w-4 h-4 text-gold mt-1 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span>Parkir tersedia di area belakang gedung utama</span>
+        </div>
+      </div>
+
+      <div class="mt-8 p-5 bg-warm-gray border border-gray-100">
+        <p class="font-sans font-light text-sm text-mid-gray leading-relaxed">
+          <strong class="text-charcoal font-normal">Dari Denpasar:</strong> Ambil Jalan By Pass Ngurah Rai menuju Gianyar, lalu ikuti Jalan Raya Ubud. Perjalanan ±55 menit.<br/><br/>
+          <strong class="text-charcoal font-normal">Dari Kuta/Seminyak:</strong> Melalui Jalan Sunset Road – Jalan Imam Bonjol – Jalan Raya Ubud. Perjalanan ±60–70 menit.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <div class="border border-gray-100 overflow-hidden shadow-sm">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.002640048705!2d115.2622!3d-8.5069!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23d4e8d00005f%3A0x9c5f7d63a97b30c!2sUbud%2C%20Kabupaten%20Gianyar%2C%20Bali!5e0!3m2!1sid!2sid!4v1617000000000!5m2!1sid!2sid"
+          width="100%" height="420" style="border:0;" allowfullscreen="" loading="lazy"
+          class="map-frame w-full"></iframe>
+      </div>
+      <p class="font-sans font-light text-xs text-mid-gray mt-3 text-center tracking-wide">Ubud, Kabupaten Gianyar, Bali, Indonesia</p>
+    </div>
+  </div>
+  <div id="footer-lokasi"></div>
+</div>
+
+<!-- ===================== PAGE: WARISAN ===================== -->
+<div id="page-warisan" class="page pt-16 hidden">
+  <div class="py-20 px-6 text-center bg-warm-gray">
+    <span class="text-xs tracking-widest uppercase font-sans text-gold">Aset Budaya</span>
+    <div class="gold-divider"></div>
+    <h1 class="font-serif text-5xl md:text-6xl font-light mt-2">Warisan</h1>
+    <p class="font-sans font-light text-mid-gray mt-4 max-w-lg mx-auto">Koleksi bangunan bersejarah, area sakral, dan pusaka kerajaan yang dirawat dengan penuh hormat.</p>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-20">
+    <div id="warisan-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+  <div id="footer-warisan"></div>
+</div>
+
+<!-- ===================== PAGE: DETAIL ===================== -->
+<div id="page-detail" class="page pt-16 hidden">
+  <div id="detail-content" class="max-w-5xl mx-auto px-6 py-20">
+    <!-- Injected by JS -->
+  </div>
+  <div id="footer-detail"></div>
+</div>
+
+<!-- FOOTER TEMPLATE (cloned into each page) -->
+<template id="footer-template">
+  <footer class="bg-charcoal text-white/70 py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-12 mb-12">
+        <div>
+          <h3 class="font-serif text-2xl font-light text-white mb-3">Refrensi Website Puri</h3>
+          <div class="gold-divider-left opacity-60"></div>
+          <p class="font-sans font-light text-sm leading-relaxed mt-2">Melestarikan warisan budaya dan sejarah Bali untuk generasi mendatang.</p>
+        </div>
+        <div>
+          <span class="text-xs tracking-widest uppercase font-sans text-gold">Navigasi</span>
+          <ul class="mt-4 space-y-2 font-sans font-light text-sm">
+            <li><button onclick="showPage('beranda')" class="hover:text-gold transition-colors">Beranda</button></li>
+            <li><button onclick="showPage('warisan')" class="hover:text-gold transition-colors">Warisan</button></li>
+            <li><button onclick="showPage('galeri')" class="hover:text-gold transition-colors">Galeri</button></li>
+            <li><button onclick="showPage('informasi')" class="hover:text-gold transition-colors">Informasi</button></li>
+            <li><button onclick="showPage('lokasi')" class="hover:text-gold transition-colors">Lokasi</button></li>
+          </ul>
+        </div>
+        <div>
+          <span class="text-xs tracking-widest uppercase font-sans text-gold">Media Sosial</span>
+          <div class="mt-4 flex gap-4">
+            <!-- Instagram -->
+            <a href="#" aria-label="Instagram" class="w-10 h-10 border border-white/20 flex items-center justify-center hover:border-gold hover:text-gold transition-all duration-300 text-white/70">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <!-- YouTube -->
+            <a href="#" aria-label="YouTube" class="w-10 h-10 border border-white/20 flex items-center justify-center hover:border-gold hover:text-gold transition-all duration-300 text-white/70">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            </a>
+            <!-- Facebook -->
+            <a href="#" aria-label="Facebook" class="w-10 h-10 border border-white/20 flex items-center justify-center hover:border-gold hover:text-gold transition-all duration-300 text-white/70">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+          </div>
+          <p class="font-sans font-light text-xs text-white/40 mt-6">Ikuti kami untuk konten budaya Bali terkini.</p>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-6 text-center">
+        <p class="font-sans font-light text-xs text-white/40 tracking-widest">© 2025 Refrensi Website Puri · Semua Hak Dilindungi</p>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<script>
+// ===================== DATA =====================
+const galleryItems = [
+  { cat: 'bangunan', img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ca9?auto=format&fit=crop&w=800&q=80', title: 'Gerbang Utama Puri', desc: 'Pintu masuk utama dengan ukiran khas Bali' },
+  { cat: 'tarian', img: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80', title: 'Tari Legong Keraton', desc: 'Tarian klasik istana yang anggun dan memukau' },
+  { cat: 'upacara', img: 'https://images.unsplash.com/photo-1604999333679-b86d54738315?auto=format&fit=crop&w=800&q=80', title: 'Upacara Piodalan', desc: 'Ritual keagamaan tahunan di pura puri' },
+  { cat: 'arsitektur', img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80', title: 'Detail Ukiran Candi Bentar', desc: 'Ornamen batu padas dengan motif kala' },
+  { cat: 'kegiatan', img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ca9?auto=format&fit=crop&w=800&q=80&sat=-10', title: 'Pertunjukan Gamelan', desc: 'Musik tradisional Bali setiap sore hari' },
+  { cat: 'bangunan', img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80&blur=0', title: 'Bale Agung', desc: 'Pavilion utama untuk upacara kerajaan' },
+  { cat: 'tarian', img: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80&sat=20', title: 'Tari Kecak Puri', desc: 'Tarian kecak eksklusif di halaman puri' },
+  { cat: 'upacara', img: 'https://images.unsplash.com/photo-1604999333679-b86d54738315?auto=format&fit=crop&w=800&q=80&sat=10', title: 'Sesaji & Banten', desc: 'Persembahan sakral dalam setiap upacara' },
+  { cat: 'arsitektur', img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ca9?auto=format&fit=crop&w=800&q=80&sat=-20', title: 'Pelinggih Padmasana', desc: 'Altar suci pusat peribadatan keluarga puri' },
+];
+
+const warisanItems = [
+  {
+    id: 'bale-agung',
+    title: 'Bale Agung',
+    sub: 'Bangunan Utama',
+    img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ca9?auto=format&fit=crop&w=800&q=80',
+    fungsi: 'Pusat penyelenggaraan upacara kerajaan, pertemuan keluarga besar puri, dan penerimaan tamu kehormatan.',
+    sejarah: 'Dibangun pada abad ke-17 oleh leluhur keluarga puri sebagai simbol kekuatan dan keagungan kerajaan. Renovasi dilakukan pada tahun 1945 dan 1998 dengan tetap mempertahankan gaya arsitektur asli.',
+    ukuran: '24 × 12 meter, dengan tinggi atap 8,5 meter menggunakan ijuk hitam pilihan.',
+    kondisi: 'Terawat dengan baik. Pemeliharaan rutin dilakukan setiap 5 tahun sekali.',
+    cerita: 'Konon, Bale Agung ini pernah menjadi tempat perundingan damai antara beberapa kerajaan Bali pada masa penjajahan Belanda. Dindingnya menyimpan pahatan sejarah yang menceritakan kisah kejayaan kerajaan.'
+  },
+  {
+    id: 'pura-puri',
+    title: 'Pura Puri',
+    sub: 'Area Sakral',
+    img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
+    fungsi: 'Tempat pemujaan dan persembahyangan keluarga kerajaan kepada leluhur dan dewa-dewa penjaga puri.',
+    sejarah: 'Didirikan bersamaan dengan berdirinya puri, diperkirakan awal abad ke-17. Pura ini telah melalui beberapa kali pemugaran, terakhir pada tahun 2010.',
+    ukuran: 'Area pura mencakup lahan seluas 800 m² dengan tiga halaman (jeroan, jaba tengah, jaba sisi).',
+    kondisi: 'Sangat terawat. Piodalan (hari peringatan) dilaksanakan setiap 210 hari sekali sesuai kalender Bali.',
+    cerita: 'Pura Puri menyimpan prasasti kuno bertanggal Saka 1542 yang mencatat silsilah keluarga kerajaan. Prasasti ini kini tersimpan aman di ruang khusus yang dijaga ketat.'
+  },
+  {
+    id: 'pusaka-kerajaan',
+    title: 'Pusaka Kerajaan',
+    sub: 'Artefak Bersejarah',
+    img: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80',
+    fungsi: 'Pusaka berupa keris, tombak, dan perhiasan kerajaan yang berfungsi sebagai pelindung spiritual puri dan simbol legitimasi kekuasaan.',
+    sejarah: 'Beberapa pusaka diwariskan sejak abad ke-15 dari Kerajaan Gelgel. Setiap pusaka memiliki nama dan cerita asal-usul yang dicatat dalam lontar keluarga.',
+    ukuran: 'Koleksi terdiri dari 47 benda pusaka, disimpan dalam ruang khusus bertempat di ndalem agung.',
+    kondisi: 'Dijaga dengan upacara pembersihan (pemerasan) secara berkala. Tidak dipamerkan untuk umum.',
+    cerita: 'Salah satu keris pusaka bernama "Ki Baru Gajah" dipercaya memiliki kekuatan magis penjaga puri. Setiap malam tertentu, keris ini diizinkan "berjalan" mengelilingi halaman puri sebagai ritual perlindungan.'
+  },
+  {
+    id: 'bale-banjar',
+    title: 'Bale Banjar',
+    sub: 'Ruang Komunal',
+    img: 'https://images.unsplash.com/photo-1604999333679-b86d54738315?auto=format&fit=crop&w=800&q=80',
+    fungsi: 'Tempat berkumpul warga banjar untuk rapat adat, latihan kesenian, dan berbagai kegiatan sosial kemasyarakatan.',
+    sejarah: 'Bale Banjar ini dibangun pada tahun 1932 dengan gotong royong seluruh warga banjar dan mendapat dukungan penuh dari keluarga puri.',
+    ukuran: 'Bangunan terbuka berukuran 18 × 10 meter dengan 12 tiang kayu cendana yang menjadi ciri khas.',
+    kondisi: 'Aktif digunakan hingga kini untuk latihan tabuh dan tari hampir setiap hari.',
+    cerita: 'Dua maestro tari legong legendaris Bali pertama kali menampilkan karya agung mereka di Bale Banjar ini pada tahun 1936, disaksikan oleh Walter Spies dan Miguel Covarrubias.'
+  },
+  {
+    id: 'candi-bentar',
+    title: 'Candi Bentar',
+    sub: 'Gapura Bersejarah',
+    img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80&sat=-5',
+    fungsi: 'Gapura pemisah antara dunia luar dan area inti puri, berfungsi sebagai pelindung spiritual dan penanda batas wilayah sakral.',
+    sejarah: 'Dibangun dari batu padas putih khas Bali sekitar tahun 1750. Ukiran pada candi bentar menggambarkan kisah Mahabharata dan simbol-simbol kosmologi Hindu Bali.',
+    ukuran: 'Tinggi 9 meter, lebar bukaan 4 meter. Dua sisi candi berbentuk simetris sempurna.',
+    kondisi: 'Beberapa bagian ukiran mengalami pelapukan alami. Restorasi parsial telah dilakukan tahun 2018 oleh tim ahli heritage.',
+    cerita: 'Konon setiap orang yang melewati Candi Bentar ini untuk pertama kali akan merasakan hawa sejuk dan damai yang tidak biasa—tanda bahwa jiwa mereka diterima oleh roh-roh penjaga puri.'
+  },
+  {
+    id: 'taman-royal',
+    title: 'Taman Royal',
+    sub: 'Lanskap Bersejarah',
+    img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ca9?auto=format&fit=crop&w=800&q=80&sat=-15',
+    fungsi: 'Taman air dan kolam teratai yang menjadi tempat rekreasi keluarga kerajaan dan simbol kemakmuran puri.',
+    sejarah: 'Taman ini dirancang mengikuti konsep "Tri Mandala" dalam arsitektur Bali, dengan kolam sebagai pusat ketenangan spiritual. Pohon-pohon tua di taman ini berusia lebih dari 150 tahun.',
+    ukuran: 'Luas taman 2.400 m² dengan kolam utama berdiameter 15 meter.',
+    kondisi: 'Kolam masih berfungsi dengan baik. Tanaman air dan ikan koi dirawat oleh tim khusus.',
+    cerita: 'Raja-raja Bali dahulu kala sering bermeditasi di tepi kolam ini saat fajar untuk mendapatkan wangsit (wahyu) sebelum mengambil keputusan penting bagi kerajaan.'
+  },
+];
+
+// ===================== ROUTING =====================
+let currentPage = 'beranda';
+
+function showPage(name) {
+  // Hide all pages
+  document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+  // Show target
+  const target = document.getElementById('page-' + name);
+  if (target) {
+    target.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  // Update nav active state
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) navEl.classList.add('active');
+  currentPage = name;
+
+  // Inject dynamic content
+  if (name === 'galeri') renderGallery();
+  if (name === 'warisan') renderWarisan();
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+}
+
+// ===================== FOOTER =====================
+function injectFooters() {
+  const tmpl = document.getElementById('footer-template');
+  const targets = document.querySelectorAll('[id^="footer-"]');
+  targets.forEach(t => {
+    const clone = tmpl.content.cloneNode(true);
+    t.appendChild(clone);
+  });
+}
+
+// ===================== GALLERY =====================
+function renderGallery() {
+  const grid = document.getElementById('gallery-grid');
+  const items = galleryItems;
+  grid.innerHTML = items.map(item => `
+    <div class="gallery-card cursor-pointer group">
+      <div class="overflow-hidden" style="height:280px;">
+        <img src="${item.img}" alt="${item.title}" class="gallery-img w-full h-full object-cover" loading="lazy"/>
+      </div>
+      <div class="pt-4 pb-2">
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">${item.cat}</span>
+        <h3 class="font-serif text-xl mt-1 mb-1">${item.title}</h3>
+        <p class="font-sans font-light text-mid-gray text-sm">${item.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+
+
+// ===================== WARISAN =====================
+function renderWarisan() {
+  const grid = document.getElementById('warisan-grid');
+  grid.innerHTML = warisanItems.map(item => `
+    <div class="card-hover border border-gray-100 group cursor-pointer" onclick="showDetail('${item.id}')">
+      <div class="overflow-hidden" style="height:240px;">
+        <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"/>
+      </div>
+      <div class="p-6">
+        <span class="text-xs tracking-widest uppercase font-sans text-gold">${item.sub}</span>
+        <h3 class="font-serif text-2xl mt-1 mb-2">${item.title}</h3>
+        <p class="font-sans font-light text-mid-gray text-sm leading-relaxed mb-4">${item.fungsi.substring(0,90)}…</p>
+        <button class="inline-flex items-center gap-2 text-xs tracking-widest uppercase font-sans text-charcoal hover:text-gold transition-colors duration-300">
+          Lihat Detail
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===================== DETAIL =====================
+function showDetail(id) {
+  const item = warisanItems.find(i => i.id === id);
+  if (!item) return;
+
+  const container = document.getElementById('detail-content');
+  container.innerHTML = `
+    <button onclick="showPage('warisan')" class="inline-flex items-center gap-2 text-xs tracking-widest uppercase font-sans text-mid-gray hover:text-gold transition-colors duration-300 mb-12">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Kembali ke Warisan
+    </button>
+
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+      <div>
+        <div class="relative overflow-hidden" style="height:480px;">
+          <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover"/>
+          <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/30 to-transparent"></div>
+        </div>
+        <div class="mt-6 p-6 bg-warm-gray border-l-2 border-gold">
+          <span class="text-xs tracking-widest uppercase font-sans text-gold">Cerita Singkat</span>
+          <p class="font-serif text-lg italic font-light text-charcoal mt-2 leading-relaxed">"${item.cerita}"</p>
+        </div>
+      </div>
+      <div>
+        <span class="badge">${item.sub}</span>
+        <h1 class="font-serif text-5xl font-light mt-4 mb-2 leading-tight">${item.title}</h1>
+        <div class="gold-divider-left mb-8"></div>
+
+        <div class="space-y-8">
+          <div>
+            <span class="text-xs tracking-widest uppercase font-sans text-gold">Fungsi</span>
+            <p class="font-sans font-light text-charcoal leading-relaxed mt-2">${item.fungsi}</p>
+          </div>
+          <div class="border-t border-gray-100 pt-8">
+            <span class="text-xs tracking-widest uppercase font-sans text-gold">Sejarah</span>
+            <p class="font-sans font-light text-charcoal leading-relaxed mt-2">${item.sejarah}</p>
+          </div>
+          <div class="border-t border-gray-100 pt-8">
+            <span class="text-xs tracking-widest uppercase font-sans text-gold">Ukuran & Dimensi</span>
+            <p class="font-sans font-light text-charcoal leading-relaxed mt-2">${item.ukuran}</p>
+          </div>
+          <div class="border-t border-gray-100 pt-8">
+            <span class="text-xs tracking-widest uppercase font-sans text-gold">Kondisi Saat Ini</span>
+            <p class="font-sans font-light text-charcoal leading-relaxed mt-2">${item.kondisi}</p>
+          </div>
+        </div>
+
+        <div class="mt-10">
+          <button onclick="showPage('warisan')" class="px-8 py-3 border border-charcoal text-charcoal text-xs tracking-widest uppercase font-sans hover:bg-charcoal hover:text-white transition-all duration-300">
+            Kembali ke Warisan
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Hide all pages, show detail
+  document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+  document.getElementById('page-detail').classList.remove('hidden');
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById('nav-warisan');
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===================== INIT =====================
+document.addEventListener('DOMContentLoaded', () => {
+  injectFooters();
+  showPage('beranda');
+});
+</script>
+</body>
+</html>
